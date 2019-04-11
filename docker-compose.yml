@@ -1,0 +1,42 @@
+version: '3.3'
+services:
+
+  db:
+    image: mongo:latest
+    container_name: db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: madadmin
+      MONGO_INITDB_ROOT_PASSWORD: supersecretpassword
+    ports:
+      - 27017:27017
+    restart: always
+    volumes: 
+      - mongo-data:/data/db
+
+  api:
+    image: rlmckenney/mad9124-pizza-shop:v1.0.0
+    container_name: api
+    ports:
+      - 80:3030
+      # - "443:443"
+    restart: always
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - api-logs:/app/logs
+      - certbot-webroot:/api/public/.well-known
+      - certbot-letsencrypt:/etc/letsencrypt
+
+  certbot:
+    image: rlmckenney/mad9124-certbot:latest
+    container_name: certbot
+    restart: always
+    volumes:
+      - certbot-webroot:/webroots/mad9124.rocks/.well-known
+      - certbot-letsencrypt:/etc/letsencrypt
+
+volumes:
+  api-logs:
+  mongo-data:
+  certbot-webroot:
+  certbot-letsencrypt:

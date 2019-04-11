@@ -14,17 +14,17 @@ services:
       - mongo-data:/data/db
 
   api:
-    image: rlmckenney/mad9124-pizza-shop:v1.0.0
+    image: rlmckenney/mad9124-pizza-shop:latest
     container_name: api
     ports:
       - 80:3030
-      # - "443:443"
+      - 443:443
     restart: always
     environment:
       - NODE_ENV=production
     volumes:
       - api-logs:/app/logs
-      - certbot-webroot:/api/public/.well-known
+      - certbot-webroot:/app/public/.well-known
       - certbot-letsencrypt:/etc/letsencrypt
 
   certbot:

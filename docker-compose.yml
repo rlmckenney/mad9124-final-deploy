@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3'
 services:
 
   db:
@@ -26,7 +26,9 @@ services:
       - api-logs:/app/logs
       - certbot-webroot:/app/public/.well-known
       - certbot-letsencrypt:/etc/letsencrypt
-
+    depends_on:
+      - db
+  
   certbot:
     image: rlmckenney/mad9124-certbot:latest
     container_name: certbot
